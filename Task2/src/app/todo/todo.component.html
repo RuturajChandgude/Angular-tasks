@@ -1,0 +1,12 @@
+<div class="p-4 max-2-xl mx-auto">
+<h1 class="text-2xl font-bold mb-4 text-center">Todo App</h1>
+
+<div class="flex gap-2 mb-4">
+    <input matInput [(ngModel)]="taskText" placeholder="add a new task" class="flex-1 border border-gay-200 px-3 py-3 rounded">
+    <button mat-raised-button color="primary" (click)="addTask()">Add</button>
+</div>
+
+<app-todo-item *ngFor="let task of todoService.todo$ | async" [todo]="taskText"
+ (delete)="todoService.deleteTodo($event)" (toggle)="todoService.toggleTodo(task.id)">
+</app-todo-item>
+</div>
