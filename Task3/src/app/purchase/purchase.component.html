@@ -1,0 +1,29 @@
+<div style="background-color: #e4e2e2;" class="purchase-wrapper">
+  <div  class="cart-grid">
+    <mat-card   *ngFor="let item of products" class="cart-card" [@fadeIn]>
+      <img mat-card-image [src]="item.imageUrl" alt="{{ item.name }}" class="product-image" />
+
+      <div class="cart-details">
+        <h3>{{ item.name }}</h3>
+        <p>Price: ₹{{ item.price }}</p>
+
+        <div class="quantity-section">
+          <button mat-mini-button color="primary" (click)="decreaseQty(item)">-</button>
+
+          <mat-form-field appearance="outline" class="qty-input">
+            <input matInput type="number" [(ngModel)]="item.quantity" min="0">
+          </mat-form-field>
+
+          <button mat-mini-button color="primary" (click)="increaseQty(item)">+</button>
+        </div>
+
+        <p><strong>Total:</strong> ₹{{ item.price * item.quantity }}</p>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="cart-summary">
+    <h2>Total Amount: ₹{{ getTotalAmount() }}</h2>
+    <button  mat-raised-button color="accent" (click)="buyNow()">Buy Now</button>
+  </div>
+</div>
