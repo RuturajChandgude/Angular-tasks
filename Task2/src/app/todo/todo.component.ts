@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { TodoService } from '../todo.service';
 import { FormsModule } from '@angular/forms';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
 @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [CommonModule,FormsModule,TodoItemComponent],
+  imports: [CommonModule,FormsModule,TodoItemComponent,MatInputModule,MatButtonModule],
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.css']
 })

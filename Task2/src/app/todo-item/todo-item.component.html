@@ -1,4 +1,4 @@
-<div class="flex items-center justify-between bg-white p-3 mb-3 rounded shadow">
+<div class="flex items-center justify-between bg-gray-100 p-3 mb-3 rounded shadow">
     <div class="flex items-center gap-3">
         <mat-checkbox [checked]="todo.completed" (change)="toggle.emit(todo.id)"></mat-checkbox>
         <span [class.line-through]="todo.completed">{{todo.text}}</span>

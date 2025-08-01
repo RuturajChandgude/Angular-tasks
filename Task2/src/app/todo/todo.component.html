@@ -1,12 +1,18 @@
-<div class="p-4 max-2-xl mx-auto">
-<h1 class="text-2xl font-bold mb-4 text-center">Todo App</h1>
+<div class="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+    <div class="w-full max-w-xl bg-white p-6 rounded-xl">
+        <h1 class="text-3xl font-bold text-center mb-6 text-blue-600">Todo App</h1>
+        <div class="flex gap-3 mb-6">
+            <input matInput [(ngModel)]="taskText" placeholder="Add a task"
+                class="flex-1 px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button mat-raised-button color="primary" (click)="addTask()">Add</button>
 
-<div class="flex gap-2 mb-4">
-    <input matInput [(ngModel)]="taskText" placeholder="add a new task" class="flex-1 border border-gay-200 px-3 py-3 rounded">
-    <button mat-raised-button color="primary" (click)="addTask()">Add</button>
-</div>
+        </div>
+   
 
-<app-todo-item *ngFor="let task of todoService.todo$ | async" [todo]="taskText"
- (delete)="todoService.deleteTodo($event)" (toggle)="todoService.toggleTodo(task.id)">
-</app-todo-item>
+    <div *ngFor="let task of todoService.todo$ | async">
+        <app-todo-item [todo]="task"
+            (delete)="todoService.deleteTodo($event)" (toggle)="todoService.toggleTodo($event)">
+        </app-todo-item>
+    </div>
 </div>
+ </div>
