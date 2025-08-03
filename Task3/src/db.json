@@ -20,9 +20,29 @@
       "price": 1299,
       "imageUrl": "https://nobero.com/cdn/shop/files/olive.jpg?v=1727093459",
       "offer": "20% OFF"
-    }],
-    
-    "orders":[
-    
-    ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "d546",
+      "products": [
+        {
+          "id": "2",
+          "name": "Jeans",
+          "price": 999,
+          "imageUrl": "https://americanmadness.co.uk/cdn/shop/files/1744898562946_edited_a1be1ed1_f9a5_4bb1_8b93_55006cdf127e_823x.webp?v=1744898883",
+          "offer": "30% OFF",
+          "quantity": 3
+        },
+        {
+          "id": "3",
+          "name": "Hoodie",
+          "price": 1299,
+          "imageUrl": "https://nobero.com/cdn/shop/files/olive.jpg?v=1727093459",
+          "offer": "20% OFF",
+          "quantity": 3
+        }
+      ]
+    }
+  ]
 }
