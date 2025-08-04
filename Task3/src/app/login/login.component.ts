@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +18,7 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent {
   loginForm:FormGroup;
-
+ 
   constructor(private fb:FormBuilder,private router:Router){
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],

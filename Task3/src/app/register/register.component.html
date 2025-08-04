@@ -28,11 +28,48 @@
            <mat-label>Confirm Password</mat-label>
             <input  matInput formControlName="confirmPassword" type="password" placeholder="Confirm your password">
             <mat-error *ngIf="f['confirmPassword'].hasError('required')">Confirm password is required</mat-error>
-           <mat-error *ngIf="registerForm.errors?.['notSame']">
+           <mat-error *ngIf="registerForm.errors?.['PasswordNoMatch']">
           Passwords do not match
         </mat-error>
         </mat-form-field>
 
+        <mat-form-field appearance="fill" class="w-full">
+           <mat-label>Birthdate</mat-label>
+            <input  matInput formControlName="birthDate" type="date" placeholder="Select your Birthdate">
+            <mat-error *ngIf="f['birthDate'].hasError('required')">Date is required</mat-error>
+          
+        </mat-form-field>
+
+        
+
+         <mat-form-field appearance="fill" class="w-full">
+           <mat-label>Phone number</mat-label>
+            <input  matInput formControlName="phoneNumber" type="number" placeholder="Enter phoneNumber">
+            <mat-error *ngIf="f['phoneNumber'].hasError('required')">Phone number is required</mat-error>
+           
+        </mat-form-field>
+        
+          <mat-form-field appearance="fill" class="w-full">
+           <mat-label>Enter pincode</mat-label>
+            <input  matInput formControlName="pincode" type="string" placeholder="Enter pincode ">
+            <mat-error *ngIf="f['pincode'].hasError('required')">Pincode is required</mat-error>
+           
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+           <mat-label>Enter District</mat-label>
+            <input  matInput formControlName="district" type="string" placeholder="Enter District ">
+            <mat-error *ngIf="f['district'].hasError('required')">District is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+           <mat-label>Enter State</mat-label>
+            <input  matInput formControlName="state" type="string" placeholder="Enter pincode ">
+            <mat-error *ngIf="f['state'].hasError('required')">State is required</mat-error>
+           
+        </mat-form-field>
+
+         
         <button  mat-raised-button color="primary" class="register-button" type="submit">
         Register
       </button>
