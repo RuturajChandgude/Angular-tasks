@@ -9,6 +9,7 @@ import { FormBuilder,FormGroup,Validators } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import { RouterOutlet } from '@angular/router'
 import { Router } from '@angular/router';
+import { group } from '@angular/animations';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -24,20 +25,17 @@ constructor(private fb:FormBuilder,private router:Router){
     email:['',[Validators.required,Validators.email]],
     password:['',[Validators.required,Validators.minLength(6)]],
     confirmPassword:['',Validators.required]
-  },{validator:this.matchPasswords})
+  })
 }
 get f(){
   return this.registerForm.controls
 }
-matchPasswords(group: FormGroup) {
-    const password = group.get('password')?.value;
-    const confirm = group.get('confirmPassword')?.value;
-    return password === confirm ? null : { notSame: true };
-  }
+
   onSubmit(){
   if(this.registerForm.controls){
-
+  
   console.log(this.registerForm.value)
+ 
   this.router.navigate(['/login'])
   }else{
     this.registerForm.markAllAsTouched();

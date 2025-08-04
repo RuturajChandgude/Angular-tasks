@@ -31,7 +31,7 @@ export class OrdersComponent implements OnInit {
     return this.latestOrder.reduce((total, item) => total + item.price * item.quantity, 0);
   }
 
-  editItem(item: CartItem): void {
+  editItem(item: CartItem) {
     const newQty = prompt(`Edit quantity for ${item.name}`, item.quantity.toString());
     if (newQty !== null) {
       const qty = parseInt(newQty);
@@ -47,7 +47,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  deleteItem(item: CartItem): void {
+  deleteItem(item: CartItem) {
     this.latestOrder = this.latestOrder.filter(i => i.id !== item.id);
 
     if (this.latestOrderId !== undefined) {

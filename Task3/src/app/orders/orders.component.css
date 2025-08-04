@@ -24,28 +24,5 @@
   font-weight: bold;
 }
 
-.payment-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
 
-.form-row {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
 
-.form-field {
-  flex: 1;
-  min-width: 200px;
-}
-
-.form-field.small {
-  max-width: 120px;
-}
-
-.pay-button {
-  align-self: flex-end;
-  margin-top: 8px;
-}

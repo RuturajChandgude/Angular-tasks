@@ -6,7 +6,7 @@ export interface Product {
   name: string;
   price: number;
   imageUrl: string;
-  offer?: string;
+  offer: string;
 }
 
 export interface CartItem extends Product {
@@ -39,11 +39,11 @@ export class CartService {
     return this.http.get<Order[]>(this.ordersUrl);
   }
 
-  updateOrder(id: number, data: Partial<Order>): Observable<Order> {
+  updateOrder(id:number, data:Partial<Order>): Observable<Order> {
     return this.http.put<Order>(`${this.ordersUrl}/${id}`, data);
   }
 
-  deleteOrder(id: number): Observable<void> {
+  deleteOrder(id:number):Observable<void> {
     return this.http.delete<void>(`${this.ordersUrl}/${id}`);
   } 
   

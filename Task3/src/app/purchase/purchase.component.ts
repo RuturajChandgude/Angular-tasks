@@ -19,16 +19,15 @@ export class PurchaseComponent {
 
  ngOnInit(): void {
     this.cartService.getProducts().subscribe(data => {
-      
-      this.products = data.map(product => ({ ...product, quantity: 0 }));
+         this.products = data.map(product =>({...product, quantity:0 }));
     });
   }
 
-  increaseQty(item: CartItem): void {
+  increaseQty(item: CartItem) {
     item.quantity++;
   }
 
-  decreaseQty(item: CartItem): void {
+  decreaseQty(item: CartItem) {
     if (item.quantity > 0) {
       item.quantity--;
     }
@@ -38,7 +37,7 @@ export class PurchaseComponent {
     return this.products.reduce((total, item) => total + item.price * item.quantity, 0);
   }
 
-  buyNow(): void {
+  buyNow() {
     const selectedItems = this.products.filter(item => item.quantity > 0);
     this.cartService.placeOrder(selectedItems).subscribe(() => {
       this.router.navigate(['/orders']);
