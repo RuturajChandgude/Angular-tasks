@@ -24,4 +24,59 @@
             </button>
         </form>
     </mat-card>
+
+  <div *ngIf="dataSource.length > 0" class="mt-6">
+  <h2 class="text-xl font-semibold mb-4">Registered Users</h2>
+
+  <mat-card class="overflow-auto">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full">
+
+
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef> Username </th>
+        <td mat-cell *matCellDef="let user"> {{user.username}} </td>
+      </ng-container>
+
+   
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+      </ng-container>
+
+   
+      <ng-container matColumnDef="phoneNumber">
+        <th mat-header-cell *matHeaderCellDef> Phone </th>
+        <td mat-cell *matCellDef="let user"> {{user.phoneNumber}} </td>
+      </ng-container>
+
+    
+      <ng-container matColumnDef="birthdate">
+        <th mat-header-cell *matHeaderCellDef> Birthdate </th>
+        <td mat-cell *matCellDef="let user"> {{ user.birthdate | date:'dd/MM/yyyy' }} </td>
+      </ng-container>
+
+    
+      <ng-container matColumnDef="pincode">
+        <th mat-header-cell *matHeaderCellDef> Pincode </th>
+        <td mat-cell *matCellDef="let user"> {{user.pincode}} </td>
+      </ng-container>
+
+   
+      <ng-container matColumnDef="district">
+        <th mat-header-cell *matHeaderCellDef> District </th>
+        <td mat-cell *matCellDef="let user"> {{user.district}} </td>
+      </ng-container>
+
+     
+      <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef> State </th>
+        <td mat-cell *matCellDef="let user"> {{user.state}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card>
+</div>
+
 </div>

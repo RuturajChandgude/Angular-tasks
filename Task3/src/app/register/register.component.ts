@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Output, EventEmitter} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -17,7 +17,7 @@ import {
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
-
+import { UserdataService } from '../userdata.service';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -29,31 +29,32 @@ export class RegisterComponent {
   registerForm: FormGroup
   error = ''
   success = ''
-  constructor(private fb: FormBuilder, private router: Router, private PincodeService: PincodeService, private snackBar: MatSnackBar) {
+ 
+  constructor(private fb: FormBuilder, private router: Router, private PincodeService: PincodeService, private snackBar: MatSnackBar,private userDataService:UserdataService) {
 
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required], { validators: this.confirmPasswordValidator }],
+      confirmPassword: ['', Validators.required ],
       birthDate:['',Validators.required],
       phoneNumber:['',[Validators.required, Validators.pattern("[0-9 ]{10}")]],
       pincode: ['', [Validators.required, Validators.minLength(6),
       Validators.maxLength(6)]],
       district: ['', Validators.required],
       state: ['', Validators.required],
-    })
+    },{ validators: this.confirmPasswordValidator })
   }
   get f() {
     return this.registerForm.controls
   }
 
   confirmPasswordValidator: ValidatorFn = (
-    control: AbstractControl
+    group: AbstractControl
   ): ValidationErrors | null => {
-    return control.value.password === control.value.confirmPassword
-      ? null
-      : { PasswordNoMatch: true };
+    const password = group.get('password')?.value;
+  const confirmPassword = group.get('confirmPassword')?.value;
+  return password === confirmPassword ? null : { PasswordNoMatch: true };
   };
 
   onSubmit() {
@@ -81,6 +82,7 @@ export class RegisterComponent {
             })
             return
           }
+           this.userDataService.addUser(this.registerForm.value);
           this.router.navigate(['/login'])
         } else {
 
