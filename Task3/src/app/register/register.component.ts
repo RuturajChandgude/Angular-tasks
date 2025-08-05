@@ -70,10 +70,10 @@ export class RegisterComponent {
         this.snackBar.open('Invalid address details', 'Undo', {
           duration: 3000
         });
-
+         
         return
       }
-
+     this.userDataService.addUser(this.registerForm.value);
       for (let d of data) {
         if (d.District.toLowerCase() === district.toLowerCase() && d.State.toLowerCase() === state.toLowerCase()) {
           if (!this.registerForm.valid) {
@@ -82,7 +82,7 @@ export class RegisterComponent {
             })
             return
           }
-           this.userDataService.addUser(this.registerForm.value);
+           
           this.router.navigate(['/login'])
         } else {
 

@@ -21,7 +21,7 @@ import { MatTableModule } from '@angular/material/table';
 })
 export class LoginComponent implements OnInit {
   loginForm:FormGroup;
-  displayedColumns: string[] = ['username', 'email', 'phoneNumber', 'birthdate', 'pincode', 'district', 'state'];
+  displayedColumns: string[] = ['username', 'email', 'phoneNumber', 'pincode', 'district', 'state'];
 dataSource: any[] = [];
 
   constructor(private fb:FormBuilder,private router:Router,private userDataService: UserdataService){
