@@ -1,5 +1,11 @@
-<ul>
-  <li *ngFor="let item of user$ | async">
-    {{item.Age}}
-  </li>
-</ul>
+<h2>Age Chart</h2>
+<app-bar-chart
+  [barChartData]="ageChartData"
+  [chartOptions]="chartOptions">
+</app-bar-chart>
+
+<h2>Salary Chart</h2>
+<app-bar-chart
+  [barChartData]="salaryChartData"
+  [chartOptions]="chartOptions">
+</app-bar-chart>
