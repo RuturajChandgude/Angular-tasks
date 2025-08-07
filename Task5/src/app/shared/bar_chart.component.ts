@@ -8,7 +8,7 @@ import { ChartData, ChartOptions } from 'chart.js';
   standalone: true,
   imports: [CommonModule, NgChartsModule],
   template: `
-    <div style="display: block;">
+    <div >
       <canvas baseChart
         [data]="barChartData"
         [type]="'bar'"

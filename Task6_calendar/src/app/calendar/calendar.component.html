@@ -1,0 +1,40 @@
+<div class="calendar-full">
+ <div class="calendar-header">
+  <div class="left-btn">
+    <button>Event</button>
+  </div>
+  <div class="date-section">
+    <button class="nav-button" (click)="previousMonth()">&#10094;</button>
+    <span class="month-label">{{ getMonthLabel() }}</span>
+    <button class="nav-button" (click)="nextMonth()">&#10095;</button>
+  </div>
+
+  <div class="toggle">
+   <input type="radio" id="month" name="calendarView" value="month" >
+      <label for="month">Month View</label>
+       <input type="radio" id="week" name="calendarView" value="week" >
+      <label for="week">Week View</label>
+      <input type="radio" id="list" name="calendarView" value="list" >
+      <label for="list">List View</label>
+  </div>
+ </div>
+
+
+  <div class="calendar-days">
+    <div class="day-label" *ngFor="let day of ['Monday', 'Tueday', 'Wednesday', 'thursday', 'friday', 'Saturday', 'Sunday']">
+      {{ day }}
+    </div>
+  </div>
+
+  <div class="calendar-days">
+    <mat-card *ngFor="let day of daysinMonth" class="calendar-day-card"> 
+        <div class="date">
+            {{day.date?.getDate()}}
+        </div>
+        <div class="quote-tag" *ngFor="let quote of day.quote">
+            {{quote}}
+        </div>
+    </mat-card>
+  </div>
+  
+</div>

@@ -1,0 +1,80 @@
+.calendar-full{
+     display: block;
+     background-color: #0f1b2b;
+     color: white;
+     padding: 15px;
+     border-radius: 10px;
+     font-family: 'Segoe UI', sans-serif;
+ }
+
+  .calendar-header{
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     background-color: #1c2f45;
+     padding: 13px 16px;
+     border-radius: 6px;
+     margin-bottom: 15px;
+ }
+.month-label {
+     font-size: 16px;
+     font-weight: bold;
+ }
+ .nav-button {
+      background-color: #1c2f45;
+     border: none;
+     color: white;
+     font-size: 18px;
+     padding: 5px 12px ;
+     border-radius: 4px;
+     cursor: pointer;
+ }
+
+ .toggle {
+  
+    color: white;
+    border: none;
+    padding: 4px 13px;
+    
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.calendar-days{
+  display: grid;
+
+     grid-template-columns: repeat(7, 1fr);
+     gap: 8px;
+}
+
+.day-label{
+ text-align: center;
+     font-weight: 600;
+     padding: 8px ;
+     background-color: #132335;
+     
+}
+
+.date {
+     font-weight: bold;
+     margin-bottom: 5px;
+ }
+
+ .quote-tag {
+     background-color: #28b362;
+     color: black;
+     font-size: 11px;
+     padding: 2px 6px;
+     border-radius: 4px;
+     margin-top: 4px;
+     display: inline-block;
+ }
+ .calendar-day-card {
+    
+    background-color: #1b2e4b;
+    padding: 9px;
+    min-height: 80px;
+    
+    color: white;
+    font-size: 14px;
+}
