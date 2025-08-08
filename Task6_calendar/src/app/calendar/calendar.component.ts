@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { QuoteService,Quote } from '../quote.service';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
+import { MatDialog,MatDialogModule } from '@angular/material/dialog';
+import { ShowDetailsDialogComponent } from '../show-details-dialog/show-details-dialog.component';
 export interface Day {
   date: Date;
   quote: string[];
@@ -12,7 +15,7 @@ export interface Day {
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule,FormsModule,MatCardModule],
+  imports: [CommonModule,FormsModule,MatCardModule,MatDialogModule],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
@@ -21,16 +24,82 @@ currentdate=new Date();
 daysinMonth:Day[]=[]
 daysinweek:Day[]=[]
 quotes:Quote[]=[]
-
-  constructor(private quoteservice:QuoteService){}
+ viewMode: 'month' | 'week' = 'month';
+  constructor(private quoteservice:QuoteService,private dialog:MatDialog){}
 
   ngOnInit(){
     this.quoteservice.getQuotes().subscribe((quotes)=>{
-      this.quotes=quotes
-      this.generateMonthDays();
+      this.quotes=quotes,
+       this.generateMonthDays();
+      this.getWeekDays(this.currentdate);
     })
   }
+ onViewChange(view: 'month' | 'week') {
+    this.viewMode = view;
+    if (view === 'week') {
+      this.getWeekDays(this.currentdate);
+    } else {
+      this.generateMonthDays();
+    }
+  }
 
+  onDayClick(day: Day) {
+    if (day.date) {
+      this.viewMode = 'week';
+      this.getWeekDays(day.date);
+    }
+  }
+
+ openAddEventDialog(){
+  const dialogRef=this.dialog.open(AddEventDialogComponent);
+  dialogRef.afterClosed().subscribe(result=>{
+    if(result){
+      this.addEventtoCalendar(result.date,result.quote)
+    }
+  })
+ }
+
+ addEventtoCalendar(date:Date,quote:string){
+  const isoDate=date.toLocaleDateString('en-CA');
+  const newQuote:Quote={date:isoDate,quote}
+
+  this.quoteservice.postQuote(newQuote).subscribe(newsavedquote=>{
+    this.quotes.push(newsavedquote);
+
+    if(this.viewMode==='month'){
+      this.generateMonthDays()
+    }else{
+      this.getWeekDays(date)
+    }
+  })
+ }
+
+
+ showDetails(){
+
+  const details=this.quoteservice.getQuoteDetails().subscribe((quoteData)=>{
+      console.log(quoteData)
+      
+    })
+  const dialog=this.dialog.open(ShowDetailsDialogComponent,
+    
+  )
+ }
+
+  getWeekDays(reference_date: Date) {
+    this.daysinweek = [];
+    const dayIndex = (reference_date.getDay() + 6) % 7;
+    const startOfWeek = new Date(reference_date);
+    startOfWeek.setDate(reference_date.getDate() - dayIndex);
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(startOfWeek);
+      date.setDate(startOfWeek.getDate() + i);
+      this.daysinweek.push({
+        date,quote: this.getQuotesForDate(date), currentMonth: date.getMonth() === this.currentdate.getMonth()
+      });
+    }
+  }
   generateMonthDays(){
     this.daysinMonth = [];
     const year=this.currentdate.getFullYear()
@@ -52,9 +121,7 @@ quotes:Quote[]=[]
     for(let i=startdayindex-1;i>=0;i--)
     {
       const prevDate=new Date(year,month-1,prevMonth_totaldays-i);
-      this.daysinMonth.push({
-        date:prevDate,
-        quote:this.getQuotesForDate(prevDate),
+      this.daysinMonth.push({ date:prevDate, quote:this.getQuotesForDate(prevDate),
         currentMonth:false,
       })
     }
@@ -82,15 +149,7 @@ quotes:Quote[]=[]
 
 
   }
-  getWeekDays(){
-    this.currentdate=new Date()
-    for(let i=1;i<=7;i++)
-    {
-      let first=this.currentdate.getDate()-this.currentdate.getDay()+i
-      let day=new Date(this.currentdate.setDate(first)).toISOString().slice(0,10)
-      this.daysinweek.push(day)
-    }
-  }
+ 
   getQuotesForDate(date: Date): string[] {
     const isoDate = date.toLocaleDateString('en-CA');
     return this.quotes.filter(
