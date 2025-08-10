@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogRef,MatDialogModule } from '@angular/material/dialog'
-import { QuoteService } from '../quote.service';
+import { MatDialog, MatDialogRef,MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { Quote, QuoteService } from '../quote.service';
 @Component({
   selector: 'app-show-details-dialog',
   standalone: true,
@@ -10,9 +10,8 @@ import { QuoteService } from '../quote.service';
   styleUrls: ['./show-details-dialog.component.css']
 })
 export class ShowDetailsDialogComponent {
-constructor(private quoteservice:QuoteService,public dialogRef:MatDialogRef<ShowDetailsDialogComponent>){}
-
-
-
+constructor(private quoteservice:QuoteService,
+  @Inject(MAT_DIALOG_DATA) public data:Quote[],
+  public dialogRef:MatDialogRef<ShowDetailsDialogComponent>){}
 
 }

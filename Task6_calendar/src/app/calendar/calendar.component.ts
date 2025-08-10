@@ -34,6 +34,12 @@ quotes:Quote[]=[]
       this.getWeekDays(this.currentdate);
     })
   }
+
+
+  /**
+   * Changes the calendar view mode between month and week.
+   * @param view The selected view mode
+   */
  onViewChange(view: 'month' | 'week') {
     this.viewMode = view;
     if (view === 'week') {
@@ -43,13 +49,26 @@ quotes:Quote[]=[]
     }
   }
 
+
+   /**
+   * Handles a click on a day cell.
+   * Switches to week view focused on that day.
+   * @param day The clicked day object
+   */
   onDayClick(day: Day) {
     if (day.date) {
-      this.viewMode = 'week';
-      this.getWeekDays(day.date);
+      // this.viewMode = 'week';
+      // this.getWeekDays(day.date);
+      this.currentdate = new Date(day.date); 
+    this.viewMode = 'week';
+    this.getWeekDays(this.currentdate);
     }
   }
 
+
+  /**
+   * Opens the dialog for adding a new event.
+   */
  openAddEventDialog(){
   const dialogRef=this.dialog.open(AddEventDialogComponent);
   dialogRef.afterClosed().subscribe(result=>{
@@ -58,7 +77,13 @@ quotes:Quote[]=[]
     }
   })
  }
+ 
 
+ /**
+   * Adds a new quote to the calendar and updates the view.
+   * @param date Date of the new quote
+   * @param quote Quote text
+   */
  addEventtoCalendar(date:Date,quote:string){
   const isoDate=date.toLocaleDateString('en-CA');
   const newQuote:Quote={date:isoDate,quote}
@@ -75,17 +100,36 @@ quotes:Quote[]=[]
  }
 
 
- showDetails(){
+  /**
+   * Displays the details of a quote in a dialog.
+   * @param date Date of the quote
+   * @param quoteText The quote text
+   */
+ showDetails(date:Date,quoteText:string){
+  const isoDate=date.toLocaleDateString('en-CA');
 
-  const details=this.quoteservice.getQuoteDetails().subscribe((quoteData)=>{
-      console.log(quoteData)
-      
+  
+
+  this.quoteservice.getQuoteDetails().subscribe(allquotes=>{
+    const matches=allquotes.filter(function(quoteDetails){
+      return quoteDetails.date===isoDate && quoteDetails.quote===quoteText;
     })
-  const dialog=this.dialog.open(ShowDetailsDialogComponent,
+
+    this.dialog.open(ShowDetailsDialogComponent,{
+    width:'350px',
+    height:'200px',
+    data:matches
+  }
     
   )
+  })
+  
  }
-
+  
+   /**
+   * Generates the days for the week view based on a reference date.
+   * @param reference_date The date to determine the week
+   */
   getWeekDays(reference_date: Date) {
     this.daysinweek = [];
     const dayIndex = (reference_date.getDay() + 6) % 7;
@@ -100,6 +144,10 @@ quotes:Quote[]=[]
       });
     }
   }
+
+   /**
+   * Generates the days for the month view 
+   */
   generateMonthDays(){
     this.daysinMonth = [];
     const year=this.currentdate.getFullYear()
@@ -150,6 +198,12 @@ quotes:Quote[]=[]
 
   }
  
+
+    /**
+   * Retrieves quotes for a specific date.
+   * @param date The date to search for quotes
+   * @returns An array of quote strings
+   */
   getQuotesForDate(date: Date): string[] {
     const isoDate = date.toLocaleDateString('en-CA');
     return this.quotes.filter(
@@ -159,20 +213,79 @@ quotes:Quote[]=[]
       },
     ).map((value,index,array)=>{
       return value.quote
-    })
+    }) 
     
-  }
-
+  } 
+ /** Moves to the next month in month view. */
    nextMonth(){
     this.currentdate = new Date(this.currentdate.getFullYear(), this.currentdate.getMonth() + 1, 1);
     this.generateMonthDays();
   }
-
+/** Moves to the previous month in month view. */
   previousMonth() {
     this.currentdate = new Date(this.currentdate.getFullYear(), this.currentdate.getMonth() - 1, 1);
     this.generateMonthDays();
   }
+
+  /**
+   * Gets a label for the current month.
+   * @returns string
+   */
    getMonthLabel(): string {
     return this.currentdate.toLocaleString('default', { month: 'long', year: 'numeric' });
   }
+
+/** Moves to the next week in week view. */
+ nextWeek() {
+  this.currentdate = new Date(
+    this.currentdate.getFullYear(),
+    this.currentdate.getMonth(),
+    this.currentdate.getDate() + 7
+  );
+  this.getWeekDays(this.currentdate);
+}
+
+
+/** Moves to the previous week in week view. */
+previousWeek() {
+  this.currentdate = new Date(
+    this.currentdate.getFullYear(),
+    this.currentdate.getMonth(),
+    this.currentdate.getDate() - 7
+  );
+  this.getWeekDays(this.currentdate);
+}
+
+
+
+ /**
+   * Gets a label for the current week.
+   * @returns A string like "Aug 4 - Aug 10, 2025"
+   */
+getWeekLabel(): string {
+  const startOfWeek = this.getWeekStart(this.currentdate);
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(endOfWeek.getDate() + 6);
+
+  const startLabel = startOfWeek.toLocaleDateString('default', { month: 'short', day: 'numeric' });
+  const endLabel = endOfWeek.toLocaleDateString('default', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  return `${startLabel} - ${endLabel}`;
+}
+
+
+
+/**
+   * Gets the start date of the week for a given date.
+   * @param date The date to find the week start for
+   * @returns The Monday of the given week
+   */
+private getWeekStart(date: Date): Date {
+  const dayIndex = (date.getDay() + 6) % 7;
+  const start = new Date(date);
+  start.setDate(start.getDate() - dayIndex);
+  return start;
+}
+
+
 }

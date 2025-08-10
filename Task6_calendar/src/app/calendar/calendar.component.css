@@ -78,3 +78,27 @@
     color: white;
     font-size: 14px;
 }
+/* .week-card{
+background-color: #1b2e4b;
+    padding: 7px;
+    height: 500px;
+        gap: 2px;
+        font-size: 14px;
+} */
+
+.calendar-days.week-card {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    background: none;
+    /* Remove the dark background from the container */
+    padding: 0;
+}
+
+.calendar-days.week-card .calendar-day-card {
+    background-color: #1b2e4b;
+    padding: 9px;
+    min-height: 500px;
+    color: white;
+    font-size: 14px;
+}

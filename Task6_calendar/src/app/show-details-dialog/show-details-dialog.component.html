@@ -1,4 +1,8 @@
-<!-- <mat-dialog-content>
-    <h1>Quote details</h1>
-    <p>{{}}</p>
-</mat-dialog-content> -->
+<h2>Quote Details</h2>
+    <div *ngFor="let item of data">
+      <p><strong>ID:</strong> {{ item.id }}</p>
+      <p><strong>Date:</strong> {{ item.date }}</p>
+      <p><strong>Quote:</strong> {{ item.quote }}</p>
+      <hr>
+    </div>
+    <button (click)="dialogRef.close()">Close</button>

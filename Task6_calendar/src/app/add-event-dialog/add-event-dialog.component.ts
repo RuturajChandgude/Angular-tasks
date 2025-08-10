@@ -23,6 +23,9 @@ eventDate:Date | null =null
 quote:string=''
 constructor(public dialogRef:MatDialogRef<AddEventDialogComponent>){}
 
+/**
+ * Submits the event data to the dialog reference.
+ */
 submit(){
   if(this.eventDate && this.quote){
     //passing data for another componrnt
@@ -30,6 +33,10 @@ submit(){
   }
 }
 
+
+/**
+ * Cancels the event creation and closes the dialog.
+ */
 cancel(){
   this.dialogRef.close();
 }

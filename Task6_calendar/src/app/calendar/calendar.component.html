@@ -4,11 +4,19 @@
     <button (click)="openAddEventDialog()">Add Event</button>
   </div>
   
-  <div class="date-section">
+  <div class="date-section" *ngIf="viewMode === 'week'">
+    <button class="nav-button" (click)="previousWeek()">&#10094;</button>
+    <span class="month-label">{{ getWeekLabel() }}</span>
+    <button class="nav-button" (click)="nextWeek()">&#10095;</button>
+  </div>
+  
+
+   <div class="date-section" *ngIf="viewMode === 'month'">
     <button class="nav-button" (click)="previousMonth()">&#10094;</button>
     <span class="month-label">{{ getMonthLabel() }}</span>
     <button class="nav-button" (click)="nextMonth()">&#10095;</button>
   </div>
+  
 
   <div class="toggle">
     
@@ -39,10 +47,10 @@
   </div>
 
 
-  <div class="calendar-days" *ngIf="viewMode === 'week'">
+  <div class="calendar-days week-card" *ngIf="viewMode === 'week'">
   <mat-card *ngFor="let day of daysinweek"  class="calendar-day-card"  (click)="onDayClick(day)">
     <div class="date">{{ day.date.getDate() }}</div>
-    <div class="quote-tag" *ngFor="let quote of day.quote" (click)="showDetails()">
+    <div class="quote-tag" *ngFor="let quote of day.quote" (click)="showDetails(day.date, quote)">
       {{ quote }}
     </div>
   </mat-card>
