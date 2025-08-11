@@ -9,6 +9,7 @@ import { ShowDetailsDialogComponent } from '../show-details-dialog/show-details-
 export interface Day {
   date: Date;
   quote: string[];
+  author:string;
   currentMonth: boolean;
 }
 
@@ -24,7 +25,8 @@ currentdate=new Date();
 daysinMonth:Day[]=[]
 daysinweek:Day[]=[]
 quotes:Quote[]=[]
- viewMode: 'month' | 'week' = 'month';
+
+viewMode: 'month' | 'week' = 'month';
   constructor(private quoteservice:QuoteService,private dialog:MatDialog){}
 
   ngOnInit(){
@@ -57,14 +59,12 @@ quotes:Quote[]=[]
    */
   onDayClick(day: Day) {
     if (day.date) {
-      // this.viewMode = 'week';
-      // this.getWeekDays(day.date);
+     
       this.currentdate = new Date(day.date); 
     this.viewMode = 'week';
     this.getWeekDays(this.currentdate);
     }
   }
-
 
   /**
    * Opens the dialog for adding a new event.
@@ -73,20 +73,62 @@ quotes:Quote[]=[]
   const dialogRef=this.dialog.open(AddEventDialogComponent);
   dialogRef.afterClosed().subscribe(result=>{
     if(result){
-      this.addEventtoCalendar(result.date,result.quote)
+      this.addEventtoCalendar(result.date,result.quote,result.author)
     }
   })
  }
- 
+
+
+editEvent(date:Date,quoteText:string,author:string){
+const isoDate=date.toLocaleDateString('en-CA')
+
+const dialogRef=this.dialog.open(AddEventDialogComponent,{
+  data:{date:date,quote:quoteText,author:author,isEdit:true, mode: 'edit'},
+  
+})
+
+dialogRef.afterClosed().subscribe(result=>{
+  console.log(result)
+  if(result){
+    this.quoteservice.getQuoteDetails().subscribe(allquotes=>{
+      const match=allquotes.find(q=>q.date===isoDate && q.quote===quoteText)
+     
+      
+      if(match){
+        const updatedQuote:Quote={
+          id:match.id,
+          date:result.date.toLocaleDateString('en-CA'),
+          quote:result.quote,
+          author:result.author
+        }
+        this.quoteservice.updateTask(updatedQuote).subscribe(updated=>{
+          const index=this.quotes.findIndex(q=>q.id===updated.id)
+          if(index!==-1){
+            this.quotes[index]=updated
+          }
+
+          if(this.viewMode==='month'){
+            this.generateMonthDays()
+          }else{
+            this.getWeekDays(this.currentdate)
+          }
+      })
+      }
+      
+    })
+  }
+})
+}
+
 
  /**
    * Adds a new quote to the calendar and updates the view.
    * @param date Date of the new quote
    * @param quote Quote text
    */
- addEventtoCalendar(date:Date,quote:string){
+ addEventtoCalendar(date:Date,quote:string,author:string){
   const isoDate=date.toLocaleDateString('en-CA');
-  const newQuote:Quote={date:isoDate,quote}
+  const newQuote:Quote={date:isoDate,quote,author}
 
   this.quoteservice.postQuote(newQuote).subscribe(newsavedquote=>{
     this.quotes.push(newsavedquote);
@@ -100,31 +142,32 @@ quotes:Quote[]=[]
  }
 
 
+
   /**
    * Displays the details of a quote in a dialog.
    * @param date Date of the quote
    * @param quoteText The quote text
    */
- showDetails(date:Date,quoteText:string){
-  const isoDate=date.toLocaleDateString('en-CA');
+//  showDetails(date:Date,quoteText:string){
+//   const isoDate=date.toLocaleDateString('en-CA');
 
   
 
-  this.quoteservice.getQuoteDetails().subscribe(allquotes=>{
-    const matches=allquotes.filter(function(quoteDetails){
-      return quoteDetails.date===isoDate && quoteDetails.quote===quoteText;
-    })
+//   this.quoteservice.getQuoteDetails().subscribe(allquotes=>{
+//     const matches=allquotes.filter(function(quoteDetails){
+//       return quoteDetails.date===isoDate && quoteDetails.quote===quoteText;
+//     })
 
-    this.dialog.open(ShowDetailsDialogComponent,{
-    width:'350px',
-    height:'200px',
-    data:matches
-  }
+//     this.dialog.open(ShowDetailsDialogComponent,{
+//     width:'350px',
+//     height:'200px',
+//     data:matches
+//   }
     
-  )
-  })
+//   )
+//   })
   
- }
+//  }
   
    /**
    * Generates the days for the week view based on a reference date.
@@ -138,9 +181,10 @@ quotes:Quote[]=[]
 
     for (let i = 0; i < 7; i++) {
       const date = new Date(startOfWeek);
+      
       date.setDate(startOfWeek.getDate() + i);
       this.daysinweek.push({
-        date,quote: this.getQuotesForDate(date), currentMonth: date.getMonth() === this.currentdate.getMonth()
+        date,quote: this.getQuotesForDate(date),author:this.getAuthorForDate(date), currentMonth: date.getMonth() === this.currentdate.getMonth()
       });
     }
   }
@@ -169,7 +213,7 @@ quotes:Quote[]=[]
     for(let i=startdayindex-1;i>=0;i--)
     {
       const prevDate=new Date(year,month-1,prevMonth_totaldays-i);
-      this.daysinMonth.push({ date:prevDate, quote:this.getQuotesForDate(prevDate),
+      this.daysinMonth.push({ date:prevDate, quote:this.getQuotesForDate(prevDate),author:this.getAuthorForDate(prevDate),
         currentMonth:false,
       })
     }
@@ -178,7 +222,7 @@ quotes:Quote[]=[]
     {
       const currentDate=new Date(year,month,i);
       this.daysinMonth.push({
-        date:currentDate, quote:this.getQuotesForDate(currentDate), currentMonth:true
+        date:currentDate, quote:this.getQuotesForDate(currentDate), currentMonth:true,author:this.getAuthorForDate(currentDate),
       })
     }
 
@@ -190,7 +234,7 @@ quotes:Quote[]=[]
     {
       const nextDate=new Date(year,month+1,i);
       this.daysinMonth.push({
-        date:nextDate,quote:this.getQuotesForDate(nextDate),currentMonth:false
+        date:nextDate,quote:this.getQuotesForDate(nextDate),author:this.getAuthorForDate(nextDate),currentMonth:false
 
       })
     }
@@ -208,7 +252,7 @@ quotes:Quote[]=[]
     const isoDate = date.toLocaleDateString('en-CA');
     return this.quotes.filter(
       function (value , index , array){
-          console.log(value)
+         
           return value.date===isoDate
       },
     ).map((value,index,array)=>{
@@ -216,6 +260,12 @@ quotes:Quote[]=[]
     }) 
     
   } 
+
+  getAuthorForDate(date:Date){
+    const datestr=date.toLocaleDateString('en-CA');
+    const author_found=this.quotes.find(q=>q.date===datestr)
+    return author_found?author_found.author:''
+  }
  /** Moves to the next month in month view. */
    nextMonth(){
     this.currentdate = new Date(this.currentdate.getFullYear(), this.currentdate.getMonth() + 1, 1);

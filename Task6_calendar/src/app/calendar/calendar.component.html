@@ -40,7 +40,7 @@
         <div class="date">
             {{day.date.getDate()}}
         </div>
-        <div class="quote-tag" *ngFor="let quote of day.quote">
+        <div class="quote-tag" *ngFor="let quote of day.quote" >
             {{quote}}
         </div>
     </mat-card>
@@ -50,7 +50,8 @@
   <div class="calendar-days week-card" *ngIf="viewMode === 'week'">
   <mat-card *ngFor="let day of daysinweek"  class="calendar-day-card"  (click)="onDayClick(day)">
     <div class="date">{{ day.date.getDate() }}</div>
-    <div class="quote-tag" *ngFor="let quote of day.quote" (click)="showDetails(day.date, quote)">
+
+    <div class="quote-tag" *ngFor="let quote of day.quote"  (click)="editEvent(day.date,quote,day.author)">
       {{ quote }}
     </div>
   </mat-card>

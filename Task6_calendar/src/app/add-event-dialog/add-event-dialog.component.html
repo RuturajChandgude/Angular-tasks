@@ -1,3 +1,7 @@
+<div>
+<h2 mat-dialog-title>
+  {{ mode === 'edit' ? 'Edit Event ' : 'Add Event'}}
+</h2>
 <mat-dialog-content>
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>Date</mat-label>
@@ -5,14 +9,20 @@
     <mat-datepicker-toggle matIconSuffix  [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
-
+  <br>
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>Quote</mat-label>
     <textarea matInput rows="3" [(ngModel)]="quote"></textarea>
+  </mat-form-field>
+  <br>
+   <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Author</mat-label>
+    <textarea matInput rows="3" [(ngModel)]="author"></textarea>
   </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-flat-button color="primary" (click)="submit()">Save</button>
-</mat-dialog-actions>
+ 
+  <button  mat-flat-button color="primary" (click)="submit()">Save</button>
+</mat-dialog-actions></div>
