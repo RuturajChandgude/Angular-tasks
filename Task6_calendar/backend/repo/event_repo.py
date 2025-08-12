@@ -14,11 +14,15 @@ def update_event(db:Session,event_id:int,updates:EventUpdate):
     if not event:
         return None
 
-    update_data=updates.dict(excludes_unset=True)
-    for key,item in update_data.items():
+    update_data=updates.dict(exclude_unset=True)
+    for key,value in update_data.items():
         setattr(event,key,value)
+    # db.add(event)
     db.commit()
     db.refresh(event)
     return event
+
+def get_all_events(db:Session):
+    return db.query(EventModel).all()
 
 

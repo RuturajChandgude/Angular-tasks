@@ -35,6 +35,7 @@ viewMode: 'month' | 'week' = 'month';
        this.generateMonthDays();
       this.getWeekDays(this.currentdate);
     })
+     //this.generateMonthDays();
   }
 
 
