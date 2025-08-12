@@ -11,7 +11,7 @@ router=APIRouter(prefix="/events",tags=["Events"])
 def create_event(event:EventCreate,db:Session=Depends(get_db)):
     return event_service.create_event(db,event)
 
-@router.patch("/{event_id}",response_model=EventShow)
+@router.put("/{event_id}",response_model=EventShow)
 def update_event(event_id:int,updates:EventUpdate,db:Session=Depends(get_db)):
     return event_service.update_event(db,event_id,updates)
 
@@ -19,3 +19,7 @@ def update_event(event_id:int,updates:EventUpdate,db:Session=Depends(get_db)):
 @router.get("",response_model=List[EventShow])
 def get_all_events(db:Session=Depends(get_db)):
     return event_service.get_all_events(db)
+
+@router.delete("/{event_id}",status_code=status.HTTP_204_NO_CONTENT)
+def delete_event(event_id:int,db:Session=Depends(get_db)):
+    return event_service.delete_event(db,event_id)

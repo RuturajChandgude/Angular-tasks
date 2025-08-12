@@ -96,3 +96,17 @@
     color: white;
     font-size: 14px;
 }
+
+
+
+
+.tabledata{
+    width: 100%;
+    text-align: center;
+    /* border-style: solid; */
+    background-color: rgb(19, 76, 156);
+}
+.tabledata table, th, td {
+  border: 1px solid rgb(25, 151, 36);
+  border-style: solid;
+}

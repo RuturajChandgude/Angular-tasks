@@ -12,3 +12,6 @@ def update_event(db:Session,event_id:int,updates:EventUpdate):
 
 def get_all_events(db:Session):
     return event_repo.get_all_events(db)
+
+def delete_event(db:Session,event_id:int):
+    return event_repo.delete_event(db,event_id)

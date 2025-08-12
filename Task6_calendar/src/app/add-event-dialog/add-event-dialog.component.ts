@@ -7,7 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Quote } from '../quote.service';
+import { Quote, QuoteService } from '../quote.service';
 //import {provideNativeDateAdapter} from '@angular/material/core';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @Component({
@@ -18,19 +18,20 @@ import { Quote } from '../quote.service';
   styleUrls: ['./add-event-dialog.component.css']
 })
 export class AddEventDialogComponent {
-
+id?:number
 eventDate:Date | null =null
 quote:string=''
 author:string=''
 mode!: 'add' | 'edit';
 isEdit=false
-constructor(public dialogRef:MatDialogRef<AddEventDialogComponent>,@Inject(MAT_DIALOG_DATA) public data:any){
+constructor(private quoteService:QuoteService,public dialogRef:MatDialogRef<AddEventDialogComponent>,@Inject(MAT_DIALOG_DATA) public data:any){
   if(data){
+    this.id=data.id
     this.mode= data.mode || 'add'
     this.eventDate=data.date || null
     this.quote=data.quote || ''
     this.author=data.author || ''
-    this.isEdit=!data.isEdit
+    this.isEdit=data.isEdit
   }
 }
 
@@ -45,6 +46,16 @@ submit(){
 }
 
 
+
+onDelete(){
+  // if(confirm('Are you sure you want to delete?')){
+  //   this.quoteService.deleteTask(id).subscribe(()=>this.dialogRef.close(true))
+  // }
+  if(this.eventDate && this.data.id){
+    //passing data for another componrnt
+    this.dialogRef.close({action:'delete',id:this.data.id})
+  }
+}
 
 
 

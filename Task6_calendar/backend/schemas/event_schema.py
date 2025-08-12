@@ -6,10 +6,8 @@ class EventCreate(BaseModel):
     quote:str
     author:str
 
-class EventUpdate(BaseModel):
-    date:Optional[date]=None
-    quote:Optional[str]=None
-    author:Optional[str]=None
+class EventUpdate(EventCreate):
+    pass
 
 
 class EventShow(EventCreate):

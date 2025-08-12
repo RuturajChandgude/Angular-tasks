@@ -17,9 +17,13 @@
     <button class="nav-button" (click)="nextMonth()">&#10095;</button>
   </div>
   
+ 
 
   <div class="toggle">
-    
+       
+      <input type="radio" id="list" name="calendarView" value="list" (change)="onViewChange('list')" >
+      <label for="month">List View</label>  
+
       <input type="radio" id="month" name="calendarView" value="month" (change)="onViewChange('month')" [checked]="viewMode === 'month'">
       <label for="month">Month View</label>
 
@@ -29,12 +33,32 @@
  </div>
 
 
-  <div class="calendar-days">
+
+   <div  *ngIf="viewMode==='list'">
+    <table  class="tabledata">
+      <thead>
+        <th>Date</th>
+        <th>Quote</th>
+        <th>Author</th>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let e of events">
+          <td>{{e.date}}</td>
+          <td>{{e.quote}}</td>
+          <td>{{e.author}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="viewMode!=='list'" class="calendar-days">
     <div class="day-label" *ngFor="let day of ['Monday', 'Tueday', 'Wednesday', 'thursday', 'friday', 'Saturday', 'Sunday']">
       {{ day }}
     </div>
   </div>
-
+  
+ 
   <div class="calendar-days" *ngIf="viewMode === 'month'">
     <mat-card *ngFor="let day of daysinMonth" class="calendar-day-card" (click)="onDayClick(day)"> 
         <div class="date">

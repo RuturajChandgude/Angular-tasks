@@ -7,6 +7,7 @@ import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.co
 import { MatDialog,MatDialogModule } from '@angular/material/dialog';
 import { ShowDetailsDialogComponent } from '../show-details-dialog/show-details-dialog.component';
 export interface Day {
+
   date: Date;
   quote: string[];
   author:string;
@@ -25,8 +26,8 @@ currentdate=new Date();
 daysinMonth:Day[]=[]
 daysinweek:Day[]=[]
 quotes:Quote[]=[]
-
-viewMode: 'month' | 'week' = 'month';
+events:Quote[]=[]
+viewMode: 'month' | 'week' | 'list' = 'month';
   constructor(private quoteservice:QuoteService,private dialog:MatDialog){}
 
   ngOnInit(){
@@ -43,16 +44,25 @@ viewMode: 'month' | 'week' = 'month';
    * Changes the calendar view mode between month and week.
    * @param view The selected view mode
    */
- onViewChange(view: 'month' | 'week') {
+ onViewChange(view: 'month' | 'week' | 'list') {
     this.viewMode = view;
     if (view === 'week') {
       this.getWeekDays(this.currentdate);
-    } else {
+    } else if(view==='month') {
       this.generateMonthDays();
+    }else{
+      this.showlist()
     }
   }
 
-
+   showlist(){
+    this.quoteservice.getQuoteDetails().subscribe((data)=>{
+      //this.events={...data}
+      this.events=Array.from(data)
+      console.log(typeof(this.events))
+      console.log(this.events)
+    })
+   }
    /**
    * Handles a click on a day cell.
    * Switches to week view focused on that day.
@@ -82,15 +92,23 @@ viewMode: 'month' | 'week' = 'month';
 
 editEvent(date:Date,quoteText:string,author:string){
 const isoDate=date.toLocaleDateString('en-CA')
-
+  const match=this.quotes.find(q=>q.date===isoDate && q.quote===quoteText)
+  if(!match) return
 const dialogRef=this.dialog.open(AddEventDialogComponent,{
-  data:{date:date,quote:quoteText,author:author,isEdit:true, mode: 'edit'},
+  data:{id:match.id, date:date,quote:quoteText,author:author,isEdit:true, mode: 'edit'},
   
 })
 
 dialogRef.afterClosed().subscribe(result=>{
-  console.log(result)
+ // console.log(result)
   if(result){
+    if(result.action==='delete' && result.id){
+      if(confirm('Are you sure you want to delete')){
+      this.quoteservice.deleteTask(result.id).subscribe(()=>{
+        this.quotes=this.quotes.filter(q=>q.id!==result.id)
+        this.viewMode==='month'?this.generateMonthDays():this.getWeekDays(this.currentdate)
+      })}
+    }else{
     this.quoteservice.getQuoteDetails().subscribe(allquotes=>{
       //const match=allquotes.find(q=>q.date===isoDate && q.quote===quoteText)
      
@@ -104,6 +122,7 @@ dialogRef.afterClosed().subscribe(result=>{
           quote:result.quote,
           author:result.author
         }
+        console.log(updatedQuote)
         this.quoteservice.updateTask(updatedQuote).subscribe(updated=>{
           const index=this.quotes.findIndex(q=>q.id===updated.id)
           if(index!==-1){
@@ -118,7 +137,7 @@ dialogRef.afterClosed().subscribe(result=>{
       })
       }
       
-    })
+    })}
   }
 })
 }

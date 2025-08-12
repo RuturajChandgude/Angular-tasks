@@ -38,7 +38,11 @@ private apiUrl='http://localhost:8000/events'
   // updateTask(updateQuote:Quote):Observable<Quote>{
   //   return this.http.put<Quote>(`${this.apiUrl}/${updateQuote.id}`,updateQuote)
   // }
-  updateTask(updateQuote:Partial<Quote>):Observable<Quote>{
-    return this.http.patch<Quote>(`${this.apiUrl}/${updateQuote.id}`,updateQuote)
+  updateTask(updateQuote:Quote):Observable<Quote>{
+    return this.http.put<Quote>(`${this.apiUrl}/${updateQuote.id}`,updateQuote)
+  }
+
+  deleteTask(quote_id:number):Observable<Quote>{
+    return this.http.delete<Quote>(`${this.apiUrl}/${quote_id}`)
   }
 }

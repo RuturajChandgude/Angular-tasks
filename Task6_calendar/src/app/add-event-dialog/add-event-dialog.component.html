@@ -25,4 +25,6 @@
   <button mat-button (click)="cancel()">Cancel</button>
  
   <button  mat-flat-button color="primary" (click)="submit()">Save</button>
+  <div *ngIf="mode==='edit'">
+  <button (click)="onDelete()" >Delete</button></div>
 </mat-dialog-actions></div>
