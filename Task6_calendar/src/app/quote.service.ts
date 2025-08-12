@@ -14,24 +14,31 @@ export interface Quote {
 
 export class QuoteService {
 
-  //private dataUrl = 'assets/data.json';
-  private apiUrl = 'http://localhost:3000/quotes';
+//  private apiUrl = 'http://localhost:3000/quotes';
+private apiUrl='http://localhost:8000/events'
+
   constructor(private http: HttpClient) {}
 
   getQuotes(): Observable<Quote[]> {
-    return this.http.get< Quote[]>(this.apiUrl)
+    return this.http.get<Quote[]>(this.apiUrl)
   }
-   postQuote(newQuote: Quote): Observable<Quote> {
-    return this.http.post<Quote>(this.apiUrl,newQuote);
-  }
+  //  postQuote(newQuote: Quote): Observable<Quote> {
+  //   return this.http.post<Quote>(this.apiUrl,newQuote);
+  // }
 
   
+  postQuote(newQuote:Quote):Observable<Quote>{
+    return this.http.post<Quote>(this.apiUrl,newQuote)
+  }
 
   getQuoteDetails():Observable<Quote[]>{
     return this.http.get<Quote[]>(this.apiUrl)
   }
 
-  updateTask(updateQuote:Quote):Observable<Quote>{
-    return this.http.put<Quote>(`${this.apiUrl}/${updateQuote.id}`,updateQuote)
+  // updateTask(updateQuote:Quote):Observable<Quote>{
+  //   return this.http.put<Quote>(`${this.apiUrl}/${updateQuote.id}`,updateQuote)
+  // }
+  updateTask(updateQuote:Partial<Quote>):Observable<Quote>{
+    return this.http.patch<Quote>(`${this.apiUrl}/${updateQuote.id}`,updateQuote)
   }
 }

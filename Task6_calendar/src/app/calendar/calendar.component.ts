@@ -91,9 +91,11 @@ dialogRef.afterClosed().subscribe(result=>{
   console.log(result)
   if(result){
     this.quoteservice.getQuoteDetails().subscribe(allquotes=>{
-      const match=allquotes.find(q=>q.date===isoDate && q.quote===quoteText)
+      //const match=allquotes.find(q=>q.date===isoDate && q.quote===quoteText)
      
-      
+      const match=allquotes.find(function(value,index,array){
+          return value.date===isoDate && value.quote===quoteText
+      })
       if(match){
         const updatedQuote:Quote={
           id:match.id,
@@ -143,31 +145,7 @@ dialogRef.afterClosed().subscribe(result=>{
 
 
 
-  /**
-   * Displays the details of a quote in a dialog.
-   * @param date Date of the quote
-   * @param quoteText The quote text
-   */
-//  showDetails(date:Date,quoteText:string){
-//   const isoDate=date.toLocaleDateString('en-CA');
 
-  
-
-//   this.quoteservice.getQuoteDetails().subscribe(allquotes=>{
-//     const matches=allquotes.filter(function(quoteDetails){
-//       return quoteDetails.date===isoDate && quoteDetails.quote===quoteText;
-//     })
-
-//     this.dialog.open(ShowDetailsDialogComponent,{
-//     width:'350px',
-//     height:'200px',
-//     data:matches
-//   }
-    
-//   )
-//   })
-  
-//  }
   
    /**
    * Generates the days for the week view based on a reference date.
@@ -246,7 +224,7 @@ dialogRef.afterClosed().subscribe(result=>{
     /**
    * Retrieves quotes for a specific date.
    * @param date The date to search for quotes
-   * @returns An array of quote strings
+   * @returns {string[]} An array of quote strings
    */
   getQuotesForDate(date: Date): string[] {
     const isoDate = date.toLocaleDateString('en-CA');
