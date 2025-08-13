@@ -2,10 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QuoteService,Quote } from '../quote.service';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
 import { MatDialog,MatDialogModule } from '@angular/material/dialog';
-import { ShowDetailsDialogComponent } from '../show-details-dialog/show-details-dialog.component';
+
+import { FilterpipePipe } from '../filterpipe.pipe';
+import {DateRange, MatDatepickerModule} from '@angular/material/datepicker';
+import {ChangeDetectionStrategy} from '@angular/core';
+import { DateAdapter, NativeDateAdapter} from '@angular/material/core';
+
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
 export interface Day {
 
   date: Date;
@@ -17,7 +25,9 @@ export interface Day {
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule,FormsModule,MatCardModule,MatDialogModule],
+  imports: [CommonModule,MatFormFieldModule,MatDatepickerModule,FilterpipePipe,FormsModule,MatCardModule,MatButtonModule,MatDialogModule],
+  providers: [{ provide: DateAdapter, useClass: NativeDateAdapter }],
+ 
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
@@ -27,6 +37,14 @@ daysinMonth:Day[]=[]
 daysinweek:Day[]=[]
 quotes:Quote[]=[]
 events:Quote[]=[]
+
+filtername:string=''
+
+start : string = '';
+
+startDate:Date | null=null
+endDate:Date | null=null
+
 viewMode: 'month' | 'week' | 'list' = 'month';
   constructor(private quoteservice:QuoteService,private dialog:MatDialog){}
 
@@ -36,9 +54,20 @@ viewMode: 'month' | 'week' | 'list' = 'month';
        this.generateMonthDays();
       this.getWeekDays(this.currentdate);
     })
+    
+    // this.start = document.getElementById('picker')?.innerHTML
+    
      //this.generateMonthDays();
   }
-
+  rangeWeekDays(date:Date):DateRange<any>{
+      if (date) {
+      const d = new Date(date)
+      const day = d.getDay();
+      const diff = d.getDate() - day + (day == 0 ? -6 : 1);
+      const start = new Date(d.setDate(diff));
+      const end = new Date(d.setDate(diff + 6));
+      return new DateRange<any>(start, end);
+  }
 
   /**
    * Changes the calendar view mode between month and week.

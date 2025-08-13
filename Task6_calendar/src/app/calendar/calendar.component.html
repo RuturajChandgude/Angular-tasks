@@ -1,7 +1,7 @@
 <div class="calendar-full">
  <div class="calendar-header">
   <div class="left-btn">
-    <button (click)="openAddEventDialog()">Add Event</button>
+    <button mat-flat-button color="primary" (click)="openAddEventDialog()">Add Event</button>
   </div>
   
   <div class="date-section" *ngIf="viewMode === 'week'">
@@ -33,6 +33,25 @@
  </div>
 
 
+ <div *ngIf="viewMode==='month'">
+  <mat-form-field>
+  <mat-label>Enter a date range</mat-label>
+  <mat-date-range-input [rangePicker]="picker">
+    <input matStartDate name="startDate" placeholder="Start date">
+    <input matEndDate name="endDate" placeholder="End date">
+  </mat-date-range-input>
+  <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
+  <mat-date-range-picker #picker></mat-date-range-picker>
+</mat-form-field>
+
+ </div>
+
+ <div  class="searchbardiv" *ngIf="viewMode==='list'">
+  <input class="searchbar" type="text" placeholder="Search event details" [(ngModel)]="filtername">
+ </div>
+
+
 
    <div  *ngIf="viewMode==='list'">
     <table  class="tabledata">
@@ -43,7 +62,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let e of events">
+        <tr *ngFor="let e of events | filterpipe :filtername">
           <td>{{e.date}}</td>
           <td>{{e.quote}}</td>
           <td>{{e.author}}</td>

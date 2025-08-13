@@ -110,3 +110,13 @@
   border: 1px solid rgb(25, 151, 36);
   border-style: solid;
 }
+.searchbardiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.searchbar{
+    width: 40%;
+    height: 30px;
+}
