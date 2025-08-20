@@ -9,5 +9,5 @@ import { MatNativeDateModule } from '@angular/material/core';
 //import {provideNativeDateAdapter} from '@angular/material/core';
 //import { MatNativeDateModule } from '@angular/material/core';
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes),provideHttpClient(), importProvidersFrom(MatNativeDateModule),provideAnimations()]
+  providers: [provideRouter(routes), provideHttpClient(), importProvidersFrom(MatNativeDateModule), provideAnimations(), provideAnimations(), provideAnimations()]
 };
